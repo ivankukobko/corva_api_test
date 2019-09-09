@@ -4,7 +4,7 @@
 
 Your task is to build a POST web service that accepts a JSON value, computes and returns a result. Deliver the final endpoint for testing.
 
-Endpoint: http://XXX/compute/<request_id>
+Endpoint: `https://fast-lowlands-16014.herokuapp.com/compute/<request_id>`
 
 Input POST Value:
 
