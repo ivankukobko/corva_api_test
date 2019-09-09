@@ -33,7 +33,5 @@ app.post('/compute/:request_id', bodyParser.json(), function(req, res, next) {
   next()
 })
 
-app.listen(3000)
-
-console.log('Runnning...')
+app.listen(process.env.PORT)
 
