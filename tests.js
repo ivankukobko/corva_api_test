@@ -32,4 +32,50 @@ describe("server", () => {
       })
   })
 
+  it("should not work with improper input: id missing", (done) => {
+    chai
+      .request(server)
+      .post("/compute")
+      .send({
+        timestamp: new Date().getTime(),
+        data: [
+          {
+            title: "Part 1",
+            values: [1,1,1]
+          },
+          {
+            title: "Part 2",
+            values: [1,1,1]
+          }
+        ]
+      })
+      .end((err, res) => {
+        expect(err).to.be.null
+        expect(res).not.have.status(200)
+        done()
+      })
+  })
+
+  it("should not work with improper input: timestamp missing", (done) => {
+    chai
+      .request(server)
+      .post("/compute/123")
+      .send({
+        data: [
+          {
+            title: "Part 1",
+            values: [1,1,1]
+          },
+          {
+            title: "Part 2",
+            values: [1,1,1]
+          }
+        ]
+      })
+      .end((err, res) => {
+        expect(err).to.be.null
+        expect(res).not.have.status(200)
+        done()
+      })
+  })
 })
