@@ -13,26 +13,41 @@ const resultReducer = (total, current, index) => {
   }
 }
 
-server.post('/compute/:request_id', bodyParser.json(), function(req, res, next) {
-  const id = req.params.request_id
+const bodyValidator = (req, res, next) => {
   const body = req.body
   const timestamp = body.timestamp // TODO: validate timestamp?
   const data = body.data
 
-  if (!timestamp || !id || !data || data.length < 2) {
+  console.log(req.query, req.body)
+  if (!timestamp || !data || data.length < 2) {
     throw("Invalid data")
+  }
+
+  next()
+}
+
+const computeMiddleware = (req, res, next) => {
+  const id = req.params.request_id
+  const body = req.body
+
+  if (!id) {
+    throw("Request Id is missing")
   }
 
   res.json(
     {
       request_id: id,
-      timestamp: timestamp,
-      result: data.reduce(resultReducer)
+      timestamp: body.timestamp,
+      result: body.data.reduce(resultReducer)
     }
   )
 
   next()
-})
+}
+
+server.use(bodyParser.json(), bodyValidator)
+
+server.post( '/compute/:request_id', computeMiddleware)
 
 server.listen(port, () => {
   console.log("server running, listening port " + port)
